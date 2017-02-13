@@ -82,7 +82,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $jobs[0]->getDescription()
         );
 
+        $this->assertEquals(
+            new Job\Url('http://candidate.cvwarehouse.com/Apply/132153?channel=cvwarehouse.com&lang=nl-BE&t=fo'),
+            $jobs[0]->getUrls()->getApplicationBranded()
+        );
+
         $this->assertEquals(new Id('131139'), $jobs[1]->getId());
         $this->assertEquals(new Name('Hoofdverpleegkundige voor WZC Ter Putkapelle'), $jobs[1]->getName());
+        $this->assertEquals(
+            new Job\Url('http://candidate.cvwarehouse.com/Apply/131139?channel=cvwarehouse.com&lang=nl-BE&t=fo'),
+            $jobs[1]->getUrls()->getApplicationBranded()
+        );
     }
 }

@@ -7,6 +7,8 @@ use TwoDotsTwice\CVWarehouse\Job;
 use TwoDotsTwice\CVWarehouse\Job\Description;
 use TwoDotsTwice\CVWarehouse\Job\Id;
 use TwoDotsTwice\CVWarehouse\Job\Name;
+use TwoDotsTwice\CVWarehouse\Job\Url;
+use TwoDotsTwice\CVWarehouse\Job\Urls;
 use TwoDotsTwice\CVWarehouse\JobCollection;
 use Webmozart\Assert\Assert;
 
@@ -44,7 +46,13 @@ class Version110Parser implements Parser
             $name = new Name(trim((string) $jobElement->name));
             $description = new Description((string) $jobElement->description);
 
-            $jobs[] = new Job($id, $name, $description);
+            $applicationUrlBranded = new Url($jobElement->urls->applicationUrlBranded);
+
+            $urls = new Urls($applicationUrlBranded);
+
+            $job = new Job($id, $name, $description, $urls);
+
+            $jobs[] = $job;
         }
 
         return new JobCollection(...$jobs);

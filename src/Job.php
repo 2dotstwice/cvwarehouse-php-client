@@ -5,6 +5,7 @@ namespace TwoDotsTwice\CVWarehouse;
 use TwoDotsTwice\CVWarehouse\Job\Description;
 use TwoDotsTwice\CVWarehouse\Job\Name;
 use TwoDotsTwice\CVWarehouse\Job\Id;
+use TwoDotsTwice\CVWarehouse\Job\Urls;
 
 class Job
 {
@@ -24,16 +25,27 @@ class Job
     private $id;
 
     /**
+     * @var Urls
+     */
+    private $urls;
+
+    /**
      * Job constructor.
      * @param Id $id
      * @param Name $name
      * @param Description $description
+     * @param Urls $urls
      */
-    public function __construct(Id $id, Name $name, Description $description)
-    {
+    public function __construct(
+        Id $id,
+        Name $name,
+        Description $description,
+        Urls $urls
+    ) {
         $this->id = $id;
         $this->name = $name;
         $this->description = $description;
+        $this->urls = $urls;
     }
 
     /**
@@ -58,5 +70,13 @@ class Job
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return Urls
+     */
+    public function getUrls()
+    {
+        return $this->urls;
     }
 }
