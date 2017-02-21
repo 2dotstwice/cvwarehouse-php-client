@@ -2,6 +2,9 @@
 
 namespace TwoDotsTwice\CVWarehouse\XML;
 
+use Carbon\Carbon;
+use DateTimeImmutable;
+use DateTimeZone;
 use SimpleXMLElement;
 use TwoDotsTwice\CVWarehouse\Job;
 use TwoDotsTwice\CVWarehouse\Job\Description;
@@ -52,9 +55,48 @@ class Version110Parser implements Parser
 
             $job = new Job($id, $name, $description, $urls);
 
+            if (isset($jobElement->expirationDate)) {
+                $expirationDate = $this->parseExpirationDate((string)$jobElement->expirationDate);
+
+                if ($expirationDate) {
+                    $job = $job->withExpirationDate($expirationDate);
+                }
+            }
+
             $jobs[] = $job;
         }
 
         return new JobCollection(...$jobs);
+    }
+
+    /**
+     * Currently the expiration date uses a non-standard based format.
+     *
+     * e.g. 2017-02-15 12:00:00 which actually means 2017-02-15T00:00
+     *
+     * @param string $dateAsString
+     *
+     * @return null|DateTimeImmutable
+     */
+    private function parseExpirationDate($dateAsString)
+    {
+        $match = preg_match('@^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})\s@', (string) $dateAsString, $matches);
+
+        if (!$match) {
+            return null;
+        }
+
+        $correctedDateAsString =
+            "{$matches['year']}-{$matches['month']}-{$matches['day']} 12:00:00";
+
+        $date = Carbon::createFromFormat(
+            'Y-m-d G:i:s',
+            $correctedDateAsString,
+            new DateTimeZone('Europe/Brussels')
+        );
+
+        $date->subDay(1)->endOfDay();
+
+        return DateTimeImmutable::createFromMutable($date);
     }
 }

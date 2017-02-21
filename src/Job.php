@@ -2,6 +2,7 @@
 
 namespace TwoDotsTwice\CVWarehouse;
 
+use DateTimeImmutable;
 use TwoDotsTwice\CVWarehouse\Job\Description;
 use TwoDotsTwice\CVWarehouse\Job\Name;
 use TwoDotsTwice\CVWarehouse\Job\Id;
@@ -28,6 +29,11 @@ class Job
      * @var Urls
      */
     private $urls;
+
+    /**
+     * @var null|DateTimeImmutable
+     */
+    private $expirationDate;
 
     /**
      * Job constructor.
@@ -78,5 +84,25 @@ class Job
     public function getUrls()
     {
         return $this->urls;
+    }
+
+    /**
+     * @param DateTimeImmutable $date
+     * @return Job
+     */
+    public function withExpirationDate(DateTimeImmutable $date)
+    {
+        $c = clone $this;
+        $c->expirationDate = $date;
+
+        return $c;
+    }
+
+    /**
+     * @return null|DateTimeImmutable
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
     }
 }

@@ -87,6 +87,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $jobs[0]->getUrls()->getApplicationBranded()
         );
 
+        $this->assertEquals('2017-02-14T23:59:59+01:00', $jobs[0]->getExpirationDate()->format(DATE_W3C));
+
         $this->assertEquals(new Id('131139'), $jobs[1]->getId());
         $this->assertEquals(new Name('Hoofdverpleegkundige voor WZC Ter Putkapelle'), $jobs[1]->getName());
         $this->assertEquals(
