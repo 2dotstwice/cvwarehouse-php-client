@@ -55,7 +55,7 @@ class Version110Parser implements Parser
 
             $job = new Job($id, $name, $description, $urls);
 
-            if (isset($jobElement->expirationDate)) {
+            if (isset($jobElement->expirationDate) && !isset($jobElement->options->spontaneousApp)) {
                 $expirationDate = $this->parseExpirationDate((string)$jobElement->expirationDate);
 
                 if ($expirationDate) {
